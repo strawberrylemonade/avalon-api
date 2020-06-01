@@ -3,7 +3,7 @@
 
 Other codebases under this project:
 * [**Avalon Transcoding Server**](https://github.com/strawberrylemonade/avalon-transcoder) - A job queue based processing of video elements.
-* [**Avalon API**](https://github.com/strawberrylemonade/avalon-ios) - iOS client for Avalon, primarily for video and audio recording.
+* [**Avalon iOS**](https://github.com/strawberrylemonade/avalon-ios) - iOS client for Avalon, primarily for video and audio recording.
 * [**Avalon Web App**](https://github.com/strawberrylemonade/avalon-web) - Web client for Avalon, primarily for screen recording and session management.
 
 ---

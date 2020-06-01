@@ -1,0 +1,1 @@
+export const syncOptions = { alter: (process.env['NODE_ENV'] !== 'production')};

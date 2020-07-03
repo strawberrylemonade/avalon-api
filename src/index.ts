@@ -20,8 +20,6 @@ export const io = Server(http);
 app.use(json());
 app.use(cors());
 
-app.get('/', (req, res, next) => { })
-
 import sessionRouter from './routers/session-router';
 app.use('/api/session', sessionRouter);
 

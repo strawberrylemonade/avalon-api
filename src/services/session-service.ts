@@ -41,7 +41,11 @@ export interface ISession {
   id: string
   code: string
   status: SessionStatus
-  sources: ISource[]
+  sources: {
+    video?: ISource
+    audio?: ISource
+    screen?: ISource
+  }
   layout: RecordingLayout
 }
 
@@ -84,14 +88,13 @@ export const createSession = async () => {
 
   const id = v4();
   const code = generate({ length: 6, charset: '2346789BCDFGHJKMPQRTVWXY' })
-  const sources: ISource[] = [];
   const status = SessionStatus.Idle;
   const layout: RecordingLayout = { pipPosition: CameraPosition.TopLeft, recordingMode: RecordingMode.PiP }
 
   try {
     const response = await Session.create({ id, code, layout, status });
     const session = response.toJSON() as ISession;
-    session.sources = sources;
+    session.sources = {};
     return session;
   } catch (e) {
     log(e);

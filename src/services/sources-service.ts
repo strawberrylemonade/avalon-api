@@ -77,13 +77,16 @@ export const addSourceToSession = async (sessionId: string, source: ISource) => 
   }
 }
 
-export const getSourcesForSession = async (sessionId: string): Promise<ISource[]> => {
+export const getSourcesForSession = async (sessionId: string): Promise<{[key: string]: ISource}> => {
   try {
     const response = await Source.findAll({ where: { sessionId }});
-    return response.map(res => res.toJSON()) as ISource[];
+    const sources = response.map(res => res.toJSON()) as ISource[];
+    const [audio] = sources.filter(s => s.type === SourceType.Microphone);
+    const [video] = sources.filter(s => s.type === SourceType.Camera);
+    const [screen] = sources.filter(s => s.type === SourceType.Screen);
+    return { audio, video, screen }
   } catch (e) {
     log(e);
     throw new DatabaseError('Could not get this session.');
   }
 }
-  

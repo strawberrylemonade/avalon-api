@@ -6,7 +6,7 @@ import { v4 } from 'uuid';
 import { createQueueService } from 'azure-storage';
 import { IMedia } from './media-service';
 import { MissingParameterError, DatabaseError } from '../helpers/errors';
-import { notifyOfUpdate } from '../routers/session-io';
+import { syncUpdate, ActionType } from '../routers/session-io';
 import log from '../helpers/log';
 const queueService = createQueueService();
 
@@ -76,7 +76,7 @@ export const addJobToSession = async (sessionId: string, type: string, media: IM
 
   try {
     const response = await Job.create({ sessionId, id, type, media });
-    notifyOfUpdate(sessionId, 'jobCreated', { id })
+    syncUpdate(sessionId, ActionType.PROCESSING_STARTED, { id })
     await queueJob(id);
     return response.toJSON();
   } catch (e) {

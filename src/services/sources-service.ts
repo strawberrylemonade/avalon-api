@@ -7,7 +7,7 @@ import { v4 } from 'uuid';
 import { MissingParameterError, DatabaseError, ConflictError } from '../helpers/errors';
 import log from '../helpers/log';
 import { syncOptions } from '../helpers/options';
-import { notifyOfUpdate } from '../routers/session-io';
+import { syncUpdate, ActionType } from '../routers/session-io';
 
 
 export enum SourceType {
@@ -58,7 +58,7 @@ Source.sync(syncOptions)
 
 export const addSourceToSession = async (sessionId: string, source: ISource) => {
   if (!sessionId) throw new MissingParameterError('sessionId');
-  
+
   const id = source?.id;
   const type = source?.type;
   const name = source?.name;
@@ -71,7 +71,7 @@ export const addSourceToSession = async (sessionId: string, source: ISource) => 
     const existingSources = await getSourcesForSession(sessionId);
     if (existingSources[type]) throw new ConflictError('There is an existing source in the session for this type.');
     const response = await Source.create({ sessionId, id, type, name });
-    notifyOfUpdate(sessionId, 'sourceAdded', source)
+    syncUpdate(sessionId, ActionType.SOURCE_ADD, source)
     return response.toJSON();
   } catch (e) {
     log(e);

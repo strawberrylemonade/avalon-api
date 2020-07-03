@@ -7,7 +7,7 @@ import { generate } from 'randomstring';
 import { MissingParameterError, DatabaseError } from '../helpers/errors';
 import log from '../helpers/log';
 import { syncOptions } from '../helpers/options';
-import { notifyOfUpdate } from '../routers/session-io';
+import { syncUpdate, ActionType } from '../routers/session-io';
 import { ISource, getSourcesForSession } from './sources-service';
 
 
@@ -134,14 +134,14 @@ export const updateSession = async (id: string, candidate: Partial<ISession>) =>
 export const startRecording = async (id: string) => {
   const session = await getSession(id);
   session.status = SessionStatus.Recording
-  notifyOfUpdate(id, 'startRecording');
+  syncUpdate(id, ActionType.START_RECORDING);
   return await updateSession(id, session);
 }
 
 export const stopRecording = async (id: string) => {
   const session = await getSession(id);
   session.status = SessionStatus.Recording
-  notifyOfUpdate(id, 'stopRecording');
+  syncUpdate(id, ActionType.STOP_RECORDING);
   return await updateSession(id, session);
 }
 

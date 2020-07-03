@@ -70,6 +70,14 @@ export class NoMatchError extends CustomError {
   }
 }
 
+export class ConflictError extends CustomError {
+  constructor(message: string) {
+    super(message)
+    this.type = 'ConflictError';
+    this.code = 400;
+  }
+}
+
 export class DatabaseError extends CustomError {
   constructor(message: string) {
     super(message)
